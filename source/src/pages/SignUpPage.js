@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const SignUpPage = () => {
   const [username, setUsername] = useState("");
@@ -16,49 +17,79 @@ const SignUpPage = () => {
       email,
       password,
     };
-    await fetch(`/api/1.0/users`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
+    axios.post(`/api/1.0/users`, body);
+    // await fetch(`/api/1.0/users`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(body),
+    // });
   };
 
   return (
-    <div>
-      <form onSubmit={submit}>
-        <h1>Sign Up</h1>
-        <label htmlFor="username">Username</label>
-        <input
-          type="text"
-          id="username"
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <label htmlFor="email">E-mail</label>
-        <input
-          type="email"
-          id="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <label htmlFor="passwordRepeat">Password Repeat</label>
-        <input
-          type="password"
-          id="passwordRepeat"
-          onChange={(e) => setPasswordRepeat(e.target.value)}
-        />
-        <button
-          type="submit"
-          disabled={password !== passwordRepeat || !password || !passwordRepeat}
-        >
-          Sign Up
-        </button>
+    <div className="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
+      <form className="card mt-5" onSubmit={submit}>
+        <div className="card-header">
+          <h1 className="text-center">Sign Up</h1>
+        </div>
+        <div className="card-body">
+          <div className="mb-3">
+            <label htmlFor="username" className="form-label">
+              Username
+            </label>
+            <input
+              className="form-control"
+              type="text"
+              id="username"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">
+              E-mail
+            </label>
+            <input
+              className="form-control"
+              type="email"
+              id="email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
+            <input
+              className="form-control"
+              type="password"
+              id="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="passwordRepeat" className="form-label">
+              Password Repeat
+            </label>
+            <input
+              className="form-control"
+              type="password"
+              id="passwordRepeat"
+              onChange={(e) => setPasswordRepeat(e.target.value)}
+            />
+          </div>
+          <div className="text-center">
+            <button
+              className="btn btn-primary"
+              type="submit"
+              disabled={
+                password !== passwordRepeat || !password || !passwordRepeat
+              }
+            >
+              Sign Up
+            </button>
+          </div>
+        </div>
       </form>
     </div>
   );
