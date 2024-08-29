@@ -6,6 +6,7 @@ const SignUpPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
+  const [apiProgress, setApiProgress] = useState(false);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -17,7 +18,9 @@ const SignUpPage = () => {
       email,
       password,
     };
+    setApiProgress(true);
     axios.post(`/api/1.0/users`, body);
+    setApiProgress(false);
     // await fetch(`/api/1.0/users`, {
     //   method: "POST",
     //   headers: {
@@ -83,9 +86,18 @@ const SignUpPage = () => {
               className="btn btn-primary"
               type="submit"
               disabled={
-                password !== passwordRepeat || !password || !passwordRepeat
+                password !== passwordRepeat ||
+                !password ||
+                !passwordRepeat ||
+                apiProgress
               }
             >
+              {apiProgress && (
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                ></span>
+              )}
               Sign Up
             </button>
           </div>
