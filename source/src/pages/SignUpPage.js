@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Input from "../components/Input";
 
 const SignUpPage = () => {
   const [username, setUsername] = useState("");
@@ -8,6 +9,7 @@ const SignUpPage = () => {
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const [apiProgress, setApiProgress] = useState(false);
   const [signupSuccess, setSignUpSuccess] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const submit = async (e) => {
     e.preventDefault();
@@ -25,7 +27,12 @@ const SignUpPage = () => {
       await axios.post(`/api/1.0/users`, body);
       // setApiProgress(false);
       setSignUpSuccess(true);
-    } catch (error) {}
+    } catch (error) {
+      if (error.response.status === 400) {
+        setErrors({ errors: error.response.data.validationErrors });
+        setApiProgress(false);
+      }
+    }
     // await fetch(`/api/1.0/users`, {
     //   method: "POST",
     //   headers: {
@@ -47,17 +54,12 @@ const SignUpPage = () => {
             <h1 className="text-center">Sign Up</h1>
           </div>
           <div className="card-body">
-            <div className="mb-3">
-              <label htmlFor="username" className="form-label">
-                Username
-              </label>
-              <input
-                className="form-control"
-                type="text"
-                id="username"
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
+            <Input
+              id="username"
+              label="Username"
+              onChange={(e) => setUsername(e.target.value)}
+              help={errors.username}
+            />
             <div className="mb-3">
               <label htmlFor="email" className="form-label">
                 E-mail
