@@ -42,6 +42,8 @@ const SignUpPage = () => {
     // });
   };
 
+  let passwordMismatch = password !== passwordRepeat ? "Password mismatch" : "";
+
   return (
     <div className="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
       {!signupSuccess && (
@@ -60,39 +62,26 @@ const SignUpPage = () => {
               onChange={(e) => setUsername(e.target.value)}
               help={errors.username}
             />
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">
-                E-mail
-              </label>
-              <input
-                className="form-control"
-                type="email"
-                id="email"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label">
-                Password
-              </label>
-              <input
-                className="form-control"
-                type="password"
-                id="password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="passwordRepeat" className="form-label">
-                Password Repeat
-              </label>
-              <input
-                className="form-control"
-                type="password"
-                id="passwordRepeat"
-                onChange={(e) => setPasswordRepeat(e.target.value)}
-              />
-            </div>
+            <Input
+              id="email"
+              label="E-mail"
+              onChange={(e) => setEmail(e.target.value)}
+              help={errors.email}
+            />
+            <Input
+              id="password"
+              type="password"
+              label="Password"
+              onChange={(e) => setPassword(e.target.value)}
+              help={errors.password}
+            />
+            <Input
+              id="passwordRepeat"
+              type="password"
+              label="Password Repeat"
+              onChange={(e) => setPasswordRepeat(e.target.value)}
+              help={passwordMismatch}
+            />
             <div className="text-center">
               <button
                 className="btn btn-primary"
