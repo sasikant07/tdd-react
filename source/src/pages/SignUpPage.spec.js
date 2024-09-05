@@ -99,10 +99,10 @@ describe("Sign Up Page", () => {
     beforeAll(() => server.listen());
     afterAll(() => server.close());
 
-    let button, passwordInput, passwordReapeatInput;
+    let button, usernameInput, emailInput, passwordInput, passwordReapeatInput;
     const setup = () => {
-      const usernameInput = screen.getByLabelText("Username");
-      const emailInput = screen.getByLabelText("E-mail");
+      usernameInput = screen.getByLabelText("Username");
+      emailInput = screen.getByLabelText("E-mail");
       passwordInput = screen.getByLabelText("Password");
       passwordReapeatInput = screen.getByLabelText("Password Repeat");
 
@@ -254,7 +254,7 @@ describe("Sign Up Page", () => {
       expect(button).toBeEnabled();
     });
 
-    it(""),
+    it("displays mismatch message for password repeat input"),
       () => {
         setup();
         userEvent.type(passwordInput, "P4ssword");
@@ -262,5 +262,25 @@ describe("Sign Up Page", () => {
         const validationError = screen.queryByText("Password mismatch");
         expect(validationError).toBeInTheDocument();
       };
+
+    it.each`
+      field         | message                      | label
+      ${"username"} | ${"Username cannot be null"} | ${"Username"}
+      ${"email"}    | ${"E-mail cannot be null"}   | ${"E-mail"}
+      ${"password"} | ${"Password cannot be null"} | ${"Password"}
+    `(
+      "clears validation error after $field is updated",
+      async ({ field, message, label }) => {
+        server.use(generateValidationError(field, message));
+
+        setup();
+
+        userEvent.click(button);
+
+        const validationError = await screen.findByText(message);
+        userEvent.type(screen.getByLabelText(label), "updated");
+        expect(validationError).not.toBeInTheDocument();
+      }
+    );
   });
 });

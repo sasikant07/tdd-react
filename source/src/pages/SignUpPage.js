@@ -2,14 +2,18 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Input from "../components/Input";
 
+const initialState = {
+  username: "",
+  email: "",
+  password: "",
+  passwordRepeat: "",
+};
+
 const SignUpPage = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordRepeat, setPasswordRepeat] = useState("");
   const [apiProgress, setApiProgress] = useState(false);
   const [signupSuccess, setSignUpSuccess] = useState(false);
   const [errors, setErrors] = useState({});
+  const [state, setState] = useState(initialState);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -42,6 +46,16 @@ const SignUpPage = () => {
     // });
   };
 
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    const errorCopy = { ...errors };
+    delete errorCopy[id];
+    setState({
+      [id]: value,
+      errors: errorCopy,
+    });
+  };
+
   let passwordMismatch = password !== passwordRepeat ? "Password mismatch" : "";
 
   return (
@@ -59,27 +73,27 @@ const SignUpPage = () => {
             <Input
               id="username"
               label="Username"
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={handleChange}
               help={errors.username}
             />
             <Input
               id="email"
               label="E-mail"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleChange}
               help={errors.email}
             />
             <Input
               id="password"
               type="password"
               label="Password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleChange}
               help={errors.password}
             />
             <Input
               id="passwordRepeat"
               type="password"
               label="Password Repeat"
-              onChange={(e) => setPasswordRepeat(e.target.value)}
+              onChange={handleChange}
               help={passwordMismatch}
             />
             <div className="text-center">
